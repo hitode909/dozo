@@ -37,7 +37,7 @@ module ::Model
     end
 
     def wget_command
-      command = ['wget', '--no-clobber']
+      command = ['wget', '--no-check-certificate', '--no-clobber']
       if self.cookie
         command << '--header'
         command << "Cookie: #{self.cookie}"
