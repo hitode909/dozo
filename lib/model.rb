@@ -37,7 +37,7 @@ module ::Model
     end
 
     def wget_command
-      command = ['wget', '--non-verbose', '--no-check-certificate', '--no-clobber']
+      command = ['wget', '-nv', '--no-check-certificate', '--no-clobber']
       if self.cookie
         command << '--header'
         command << "Cookie: #{self.cookie}"
@@ -90,6 +90,10 @@ module ::Model
       self.status == 'done'
     end
 
+    def failed?
+      self.status == 'failed'
+    end
+
     def failed!
       self.retry_count += 1
       if self.retry_count == 10
@@ -97,6 +101,12 @@ module ::Model
       else
         self.status = 'yet'
       end
+      self.save
+    end
+
+    def reset!
+      self.retry_count = 0
+      self.status = 'yet'
       self.save
     end
 

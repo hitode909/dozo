@@ -37,6 +37,17 @@ class DozoApp < Sinatra::Base
     'ok'
   end
 
+  post '/reset' do
+    item = Model::Item.find(
+      :uri => params[:uri]
+      )
+    halt 404 unless item
+    halt 400 unless item.failed?
+    item.reset!
+    DozoApp.logger.info "reset item #{item.uri}"
+    'ok'
+  end
+
   get '/files/:path' do
     path = File.expand_path(File.join(Model::Item.files_root, unescape(params[:path])))
     halt 404 unless File.exists?(path)

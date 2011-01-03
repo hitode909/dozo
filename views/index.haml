@@ -24,6 +24,10 @@
         %form{ :method => "post", :action => "/delete" }
           %input{ :type => "hidden", :name => "uri", :value => item.uri }
           %input{ :type => "submit", :value => "delete" }
+        - if item.failed?
+          %form{ :method => "post", :action => "/reset" }
+            %input{ :type => "hidden", :name => "uri", :value => item.uri }
+            %input{ :type => "submit", :value => "reset" }
       %td
         - if item.done?
           %a{ :href => item.local_uri }= item.filename
