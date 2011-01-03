@@ -1,0 +1,29 @@
+.info= "files_root is #{Model::Item.files_root}"
+%h3 create
+.create
+  %form{ :method => "post", :action => "/" }
+    %input{ :type => "text", :name => "uri", :placeholder => "uri", :size => 80 }
+    %br
+    %input{ :type => "text", :name => "cookie", :placeholder => "cookie", :size => 80 }
+    %br
+    %input{ :type => "text", :name => "user_agent", :placeholder => "user_agent", :size => 80 }
+    %br
+    %input{ :type => "submit", :value => "create new file" }
+
+%h3 files
+%table.files
+  %tr
+    %th uri
+    %th status
+    %th local file
+  - @items.each do |item|
+    %tr.item
+      %td= item.uri
+      %td
+        = item.status
+        %form{ :method => "post", :action => "/delete" }
+          %input{ :type => "hidden", :name => "uri", :value => item.uri }
+          %input{ :type => "submit", :value => "delete" }
+      %td
+        - if item.done?
+          %a{ :href => item.local_uri }= item.filename
