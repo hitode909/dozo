@@ -17,16 +17,18 @@ class DozoApp < Sinatra::Base
   end
 
   post '/' do
-    Model::Item.create(
-      :uri => params[:uri],
-      :cookie => params[:cookie],
-      :user_agent => params[:uset_agent]
-      )
-    DozoApp.logger.info "new item #{params[:uri]}"
-    'ok'
-  rescue => error
-    DozoApp.logger.warn error.message
-    halt 500
+    begin
+      Model::Item.create(
+        :uri => params[:uri],
+        :cookie => params[:cookie],
+        :user_agent => params[:uset_agent]
+        )
+      DozoApp.logger.info "new item #{params[:uri]}"
+      'ok'
+    rescue => error
+      DozoApp.logger.warn error.message
+      halt 500
+    end
   end
 
   post '/delete' do
