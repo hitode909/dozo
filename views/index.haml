@@ -20,7 +20,7 @@
     %tr.item
       %td= item.uri
       %td
-        = item.status
+        = "#{item.status} (#{item.updated_at})"
         %form{ :method => "post", :action => "/delete" }
           %input{ :type => "hidden", :name => "uri", :value => item.uri }
           %input{ :type => "submit", :value => "delete" }
