@@ -24,6 +24,9 @@ class DozoApp < Sinatra::Base
       )
     DozoApp.logger.info "new item #{params[:uri]}"
     'ok'
+  rescue => error
+    DozoApp.logger.warn error.message
+    halt 500
   end
 
   post '/delete' do
