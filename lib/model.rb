@@ -40,7 +40,7 @@ module ::Model
       command = ['wget', '--progress=dot:mega', '--no-check-certificate', '-c']
       if self.cookie
         command << '--header'
-        command << "Cookie: '#{self.cookie}'"
+        command << "'Cookie: #{self.cookie}'"
       end
 
       if self.user_agent
