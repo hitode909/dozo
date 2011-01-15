@@ -73,7 +73,14 @@ module ::Model
     end
 
     def filesize
-      File.stat(self.local_path).size rescue 0
+      size = File.stat(self.local_path).size rescue 0
+      suffixes = %w{B KB MB GB}
+      index = 0
+      while size >= 1024.0
+        size /= 1024.0
+        index += 1
+      end
+      "%.1f#{suffixes[index]}" % size
     end
 
     def yet!
