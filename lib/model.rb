@@ -71,6 +71,10 @@ module ::Model
       File.join(self.class.files_root, filename)
     end
 
+    def filesize
+      File.stat(self.local_path).size rescue 0
+    end
+
     def yet!
       self.status = 'yet'
       self.save
@@ -105,6 +109,7 @@ module ::Model
     end
 
     def reset!
+      self.delete_file
       self.retry_count = 0
       self.status = 'yet'
       self.save

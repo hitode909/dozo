@@ -14,20 +14,21 @@
 %table.files
   %tr
     %th uri
-    %th status
+    %th info
+    %th action
     %th local file
   - @items.each do |item|
     %tr.item
       %td= item.uri
       %td
-        = "#{item.status} (#{item.updated_at})"
+        = "#{item.status} #{item.updated_at} #{item.filesize}"
+      %td
         %form{ :method => "post", :action => "/delete" }
           %input{ :type => "hidden", :name => "uri", :value => item.uri }
           %input{ :type => "submit", :value => "delete" }
-        - if item.failed?
-          %form{ :method => "post", :action => "/reset" }
-            %input{ :type => "hidden", :name => "uri", :value => item.uri }
-            %input{ :type => "submit", :value => "reset" }
+        %form{ :method => "post", :action => "/reset" }
+          %input{ :type => "hidden", :name => "uri", :value => item.uri }
+          %input{ :type => "submit", :value => "reset" }
       %td
         - if item.done?
           %a{ :href => item.local_uri }= item.filename

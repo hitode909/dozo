@@ -47,7 +47,6 @@ class DozoApp < Sinatra::Base
       :uri => params[:uri]
       )
     halt 404 unless item
-    halt 400 unless item.failed?
     item.reset!
     DozoApp.logger.info "reset item #{item.uri}"
     'ok'

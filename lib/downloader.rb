@@ -15,11 +15,12 @@ class Downloader
   end
 
   def download(item)
-    logger.info "download #{item.inspect}"
+    logger.info "download #{item.uri}"
 
     item.process!
 
     system *item.wget_command or raise "failed"
+    logger.info "done: #{item.uri}, #{item.filesize}"
 
     item.done!
   rescue => error
