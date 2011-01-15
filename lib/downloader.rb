@@ -12,6 +12,11 @@ class Downloader
       download item if item
       sleep 10
     }
+    # TODO
+    # rescue SignalException => error
+    #   @logger.warn "kill wget process"
+    #   Process.kill('KILL', @io.pid)# if @io
+    #   raise error
   end
 
   def download(item)
@@ -19,12 +24,29 @@ class Downloader
 
     item.process!
 
-    system *item.wget_command or raise "failed"
+    logger.info item.wget_command
+    self.wget(item.wget_command)
     logger.info "done: #{item.uri}, #{item.filesize}"
 
     item.done!
   rescue => error
     logger.warn "failed: #{error.class}, #{error.message}"
     item.failed!
+  end
+
+  def wget(command)
+    @io = IO.popen command, 'r+'
+    buffer = ''
+    loop {
+      chr = @io.read 1
+      break if chr.nil?
+      buffer << chr
+      if chr =~ /[\r\n]/
+        buffer.chomp!
+        logger.info buffer unless buffer.empty?
+        buffer = ''
+      end
+    }
+    @io = nil
   end
 end

@@ -37,22 +37,23 @@ module ::Model
     end
 
     def wget_command
-      command = ['wget', '-q', '--no-check-certificate', '-c']
+      command = ['wget', '--progress=dot:mega', '--no-check-certificate', '-c']
       if self.cookie
         command << '--header'
-        command << "Cookie: #{self.cookie}"
+        command << "Cookie: '#{self.cookie}'"
       end
 
       if self.user_agent
-        command << "--user-agent=#{self.user_agent}"
+        command << "--user-agent='#{self.user_agent}'"
       end
 
       command << '-O'
-      command << self.local_path
+      command << "'#{self.local_path}'"
 
-      command << self.uri
+      command << "'#{self.uri}'"
+      command << "2>&1"
 
-      command
+      command.join(" ")
     end
 
     def delete_file
