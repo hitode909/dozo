@@ -27,7 +27,7 @@ class DozoApp < Sinatra::Base
       'ok'
     rescue => error
       DozoApp.logger.warn error.message
-      halt 500
+      halt 400, error.message
     end
   end
 
